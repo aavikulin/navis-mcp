@@ -608,6 +608,7 @@ class Bridge:
         limit: int = 0,
         penetration_categories: list[str] | None = None,
         penetration_keywords: list[str] | None = None,
+        include_penetration_inventory: bool = True,
     ) -> dict[str, Any]:
         result = self.call(
             "clash/export",
@@ -618,6 +619,7 @@ class Bridge:
                 "limit": limit,
                 "penetration_categories": penetration_categories or [],
                 "penetration_keywords": penetration_keywords or [],
+                "include_penetration_inventory": include_penetration_inventory,
             },
         )
         if not result.get("analysis_revision"):

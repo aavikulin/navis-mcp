@@ -417,7 +417,14 @@ namespace NavisCoord
             {
                 ["schema"] = NavisContext.Schema,
                 ["analysis_revision"] = analysisRevision,
-                ["penetration_inventory"] = PenetrationInventory.Read(doc, scale, wanted, payload),
+                ["penetration_inventory"] = Json.Bool(payload, "include_penetration_inventory", true)
+                    ? PenetrationInventory.Read(doc, scale, wanted, payload)
+                    : new Dictionary<string, object>
+                    {
+                        ["scope"] = "not_requested",
+                        ["complete"] = false,
+                        ["elements"] = new List<object>()
+                    },
                 ["document_fingerprint"] = DocumentContext.Fingerprint(doc),
                 ["document"] = new Dictionary<string, object>
                 {

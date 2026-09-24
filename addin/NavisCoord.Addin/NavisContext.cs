@@ -319,6 +319,7 @@ namespace NavisCoord
             {
                 ["path_id"] = pathId,
                 ["display_name"] = item?.DisplayName ?? string.Empty,
+                ["ancestors"] = AncestorNames(item),
                 ["category"] = CategoryOf(item),
                 ["model_index"] = modelIndex,
                 ["source_file"] = SourceFileOf(item, doc, modelIndex),
@@ -339,6 +340,18 @@ namespace NavisCoord
                 payload["bbox_max"] = new[] { 0.0, 0.0, 0.0 };
             }
             return payload;
+        }
+
+        private static List<string> AncestorNames(ModelItem item)
+        {
+            var names = new List<string>();
+            var current = item?.Parent;
+            for (var depth = 0; current != null && depth < 12; depth++, current = current.Parent)
+            {
+                var name = current.DisplayName ?? string.Empty;
+                if (!string.IsNullOrWhiteSpace(name)) names.Add(name);
+            }
+            return names;
         }
 
         /// <summary>
